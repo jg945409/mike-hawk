@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://bm2c83510pxyn"]
+
+[ext_resource type="Script" uid="uid://cknue4ovlwoy4" path="res://player.gd" id="1_a202f"]
+[ext_resource type="Texture2D" uid="uid://oj6qh6lgui6k" path="res://Textures/output-onlinepngtools (1).png" id="2_noarx"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_3tyjd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a0tk4"]
+albedo_texture = ExtResource("2_noarx")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dmb83"]
+
+[node name="Node3D" type="Node3D" unique_id=643964796]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=924406492]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1342083230]
+transform = Transform3D(0.7353911, 0, 0.7353911, 0, 1.04, 0, -0.7353911, 0, 0.7353911, 0, 0, 0)
+use_collision = true
+size = Vector3(19, 1, 19)
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="." unique_id=2058436107]
+transform = Transform3D(0.7040206, 0.7101795, 0, -0.7101795, 0.7040206, 0, 0, 0, 1, -0.7888122, -0.03144431, -0.39906836)
+transparency = 0.28
+polygon = PackedVector2Array(0, 0, 0.53561133, 0.5184637, 1, 1, 1, 0)
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=1051248849]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_a202f")
+metadata/_edit_group_ = true
+
+[node name="player_mesh" type="MeshInstance3D" parent="Player" unique_id=534898220]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9588946, -0.025197923)
+mesh = SubResource("CapsuleMesh_3tyjd")
+surface_material_override/0 = SubResource("StandardMaterial3D_a0tk4")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=245509482]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0077352524, 0.9891157, 0.017949581)
+shape = SubResource("CapsuleShape3D_dmb83")
+metadata/_edit_group_ = true
+
+[node name="DashTimer" type="Timer" parent="Player" unique_id=1140022587]
+wait_time = 0.12
+
+[node name="DashCooldown" type="Timer" parent="Player" unique_id=1910555559]
+process_callback = 0
+wait_time = 0.5
+
+[node name="Camera3D" type="Camera3D" parent="Player" unique_id=1451255356]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 7, 8)
+fov = 90.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1075042803]
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="." unique_id=1279414799]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, -3)
+use_collision = true
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=1561309013]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -3)
+use_collision = true
+
+[connection signal="timeout" from="Player/DashTimer" to="Player" method="_on_dash_timer_timeout"]
+[connection signal="timeout" from="Player/DashCooldown" to="Player" method="_on_dash_cooldown_timeout"]
